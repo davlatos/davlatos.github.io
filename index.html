@@ -11,31 +11,43 @@
 
   <script>
     function analyze() {
-      // Получите файл PDF из формы
-      const pdf = document.querySelector('input[name="pdf"]').files[0];
+  // Получите файл PDF из формы
+  const pdf = document.querySelector('input[name="pdf"]').files[0];
 
-      // Создайте объект PDFReader
-      const reader = new FileReader();
+  // Создайте объект PDFReader
+  const reader = new FileReader();
 
-      // Прочитайте файл PDF
-      reader.onload = () => {
-        // Получите данные PDF в виде объекта
-        const data = reader.result;
+  // Прочитайте файл PDF
+  reader.onload = () => {
+    // Получите данные PDF в виде объекта
+    const data = reader.result;
 
-        // Сделайте необходимые изменения в данных
-        // ...
+    // Сделайте необходимые изменения в данных
+    // ...
 
-        // Сохраните измененные данные в файл PDF
-        const blob = new Blob([data], {type: 'application/pdf'});
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'анализированный.pdf';
-        link.click();
-      };
+    // Найдите все числа в данных
+    const numbers = /[0-9]+/g.exec(data);
 
-      // Запустите чтение файла PDF
-      reader.readAsArrayBuffer(pdf);
+    // Для каждого числа в данных
+    for (const number of numbers) {
+      // Увеличьте число на 1
+      number = parseInt(number) + 1;
+
+      // Замените число в данных
+      data = data.replace(number, String(number));
     }
+
+    // Сохраните измененные данные в файл PDF
+    const blob = new Blob([data], {type: 'application/pdf'});
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'анализированный.pdf';
+    link.click();
+  };
+
+  // Запустите чтение файла PDF
+  reader.readAsArrayBuffer(pdf);
+}
   </script>
 </body>
 </html>
